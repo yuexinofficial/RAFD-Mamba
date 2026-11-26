@@ -10,7 +10,7 @@ plt.rcParams['font.sans-serif'] = ['Noto Sans CJK SC', 'DejaVu Sans']
 plt.rcParams['axes.unicode_minus'] = False
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, HERE)
-MODELS = [('RGF-Net', 'mybackbone/runs/mybackbone_rafr4_dmsc_s123/20260926_135443', 'output/mybackbone_rafr4_dmsc_tnui_s42/2026*', 'mybackbone/runs/mybackbone_rafr4_dmsc_s123/20260926_135443', 56.18), ('EccoMamba', 'output/eccomamba_userproto_s42/20260924_124907', 'output/eccomamba_userproto_tnui_s42/2026*', 'output/eccomamba_userproto_s42/20260924_124907', 63.47), ('ConvNeXtV2-UNet', 'output/convnextv2_unet_tn3k_s42/20260926_032645', 'output/convnextv2_unet_tnui_s42/2026*', 'output/convnextv2_unet_tn3k_s42/20260926_032645', 34.86), ('CFFormer', 'output/cfformer_tn3k_s42/20260925_003052', 'output/cfformer_tnui_s42/2026*', 'output/cfformer_tn3k_s42/20260925_003052', 99.57), ('Swin-Unet', 'output/swinunet_tn3k_s42/2026*', 'output/swinunet_tnui_s42/2026*', 'output/swinunet_tn3k_s42/2026*', 41.39), ('nnU-Net', 'output/nnunet_plain_tn3k_s42/2026*', 'output/nnunet_plain_tnui_s42/2026*', 'output/nnunet_plain_tn3k_s42/2026*', 9.0), ('VM-UNet', 'output/vmunet_baseline_tn3k_fold0_s42/20260924_053648', 'output/vmunet_tnui_s42/2026*', 'output/vmunet_baseline_tn3k_fold0_s42/20260924_053648', 27.43), ('U-Net', 'output/pytorch_unet_tn3k_fold0_s42/20260924_061243', 'output/pytorch_unet_tnui_s42/2026*', 'output/pytorch_unet_tn3k_fold0_s42/20260924_061243', 31.04), ('DAC-Net', 'output/dacnet500_tn3k_s42/20260926_084434', 'output/dacnet_tnui_s42/2026*', 'output/dacnet500_tn3k_s42/20260926_084434', 1.28), ('Attention U-Net', 'output/att_unet_tn3k_s42/2026*', 'output/att_unet_tnui_s42/2026*', 'output/att_unet_tn3k_s42/2026*', 2.88)]
+MODELS = [('RAFD-Mamba', 'mybackbone/runs/mybackbone_rafr4_dmsc_s123/20260926_135443', 'output/mybackbone_rafr4_dmsc_tnui_s42/2026*', 'mybackbone/runs/mybackbone_rafr4_dmsc_s123/20260926_135443', 56.18), ('EccoMamba', 'output/eccomamba_userproto_s42/20260924_124907', 'output/eccomamba_userproto_tnui_s42/2026*', 'output/eccomamba_userproto_s42/20260924_124907', 63.47), ('ConvNeXtV2-UNet', 'output/convnextv2_unet_tn3k_s42/20260926_032645', 'output/convnextv2_unet_tnui_s42/2026*', 'output/convnextv2_unet_tn3k_s42/20260926_032645', 34.86), ('CFFormer', 'output/cfformer_tn3k_s42/20260925_003052', 'output/cfformer_tnui_s42/2026*', 'output/cfformer_tn3k_s42/20260925_003052', 99.57), ('Swin-Unet', 'output/swinunet_tn3k_s42/2026*', 'output/swinunet_tnui_s42/2026*', 'output/swinunet_tn3k_s42/2026*', 41.39), ('nnU-Net', 'output/nnunet_plain_tn3k_s42/2026*', 'output/nnunet_plain_tnui_s42/2026*', 'output/nnunet_plain_tn3k_s42/2026*', 9.0), ('VM-UNet', 'output/vmunet_baseline_tn3k_fold0_s42/20260924_053648', 'output/vmunet_tnui_s42/2026*', 'output/vmunet_baseline_tn3k_fold0_s42/20260924_053648', 27.43), ('U-Net', 'output/pytorch_unet_tn3k_fold0_s42/20260924_061243', 'output/pytorch_unet_tnui_s42/2026*', 'output/pytorch_unet_tn3k_fold0_s42/20260924_061243', 31.04), ('DAC-Net', 'output/dacnet500_tn3k_s42/20260926_084434', 'output/dacnet_tnui_s42/2026*', 'output/dacnet500_tn3k_s42/20260926_084434', 1.28), ('Attention U-Net', 'output/att_unet_tn3k_s42/2026*', 'output/att_unet_tnui_s42/2026*', 'output/att_unet_tn3k_s42/2026*', 2.88)]
 TAG = ['test', 'test', 'DDTI']
 
 def load(pat, tag):
@@ -43,7 +43,7 @@ def main():
     dice = [data[n]['DS0']['dice'] for n in names]
     hd95 = [data[n]['DS0']['hd95'] for n in names]
     x = np.arange(len(names))
-    colors = ['#c0392b' if n == 'RGF-Net' else '#7f8c8d' for n in names]
+    colors = ['#c0392b' if n == 'RAFD-Mamba' else '#7f8c8d' for n in names]
     fig, axes = plt.subplots(1, 2, figsize=(13.2, 3.6))
     for ax, vals, lab, better in [(axes[0], dice, 'Dice $\\uparrow$', 'max'), (axes[1], hd95, 'HD95 (pixel) $\\downarrow$', 'min')]:
         ax.bar(x, vals, color=colors, width=0.68, edgecolor='white', linewidth=0.6)
@@ -68,10 +68,10 @@ def main():
     fig.savefig(out_a.replace('.png', '.pdf'), bbox_inches='tight', facecolor='white')
     print('saved', out_a)
     fig, axes = plt.subplots(1, 2, figsize=(13.4, 4.0))
-    names_b = [n for n in data if n != 'RGF-Net' and all((f'DS{k}' in data[n] for k in range(3)))]
+    names_b = [n for n in data if n != 'RAFD-Mamba' and all((f'DS{k}' in data[n] for k in range(3)))]
     names_b.sort(key=lambda n: -data[n]['DS0']['dice'])
-    ref = data['RGF-Net']
-    tg = {'RGF-Net': '#c0392b', 'EccoMamba': '#e67e22', 'ConvNeXtV2-UNet': '#8e44ad', 'CFFormer': '#2980b9', 'Swin-Unet': '#16a085', 'nnU-Net': '#7f8c8d', 'VM-UNet': '#34495e', 'U-Net': '#95a5a6', 'DAC-Net': '#bdc3c7', 'Attention U-Net': '#d5dbdb'}
+    ref = data['RAFD-Mamba']
+    tg = {'RAFD-Mamba': '#c0392b', 'EccoMamba': '#e67e22', 'ConvNeXtV2-UNet': '#8e44ad', 'CFFormer': '#2980b9', 'Swin-Unet': '#16a085', 'nnU-Net': '#7f8c8d', 'VM-UNet': '#34495e', 'U-Net': '#95a5a6', 'DAC-Net': '#bdc3c7', 'Attention U-Net': '#d5dbdb'}
     y = np.arange(len(names_b))
     h = 0.26
     ds_lab = ['TN3K', 'TNUI-2021', 'DDTI(外部)']

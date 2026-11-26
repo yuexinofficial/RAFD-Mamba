@@ -71,18 +71,6 @@ def load_model(ckpt_path, device):
         _kw['dmsc_levels'] = cfg['dmsc_levels']
     if 'dmsc_lambda' in cfg:
         _kw['dmsc_lambda'] = cfg['dmsc_lambda']
-    if 'sco_levels' in cfg:
-        _kw['sco_levels'] = cfg['sco_levels']
-        _kw['sco_shift_size'] = cfg.get('sco_shift_size', 1)
-    if 'msfr_levels' in cfg:
-        _kw['msfr_levels'] = cfg['msfr_levels']
-        _kw['skip0_conn'] = cfg.get('skip0_conn', False)
-    if 'lge_levels' in cfg:
-        _kw['lge_levels'] = cfg['lge_levels']
-    if 'hae_levels' in cfg:
-        _kw['hae_levels'] = cfg['hae_levels']
-    if 'msfr_fixed_lambda' in cfg:
-        _kw['msfr_fixed_lambda'] = cfg['msfr_fixed_lambda']
     model = build_model(arch, pretrained=None, **_kw)
     missing, unexpected = model.load_state_dict(sd, strict=False)
     if unexpected:

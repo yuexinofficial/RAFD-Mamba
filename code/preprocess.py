@@ -69,7 +69,7 @@ def run(dataset, force=False):
     if os.path.exists(os.path.join(root, 'split_manifest.json')) and (not force):
         print(f'[skip] {dataset} 已存在 manifest(加 --force 重做)')
         return
-    manifest = dict(schema_version=SCHEMA_VERSION, dataset=dataset, source=os.path.join(C.RAW_ROOT, C.DATASETS[dataset]['raw_dir']), split_origin=C.DATASETS[dataset]['split_origin'], split_note=C.DATASETS[dataset]['split_note'], built_at=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), resize=dict(size=[C.IMG_SIZE, C.IMG_SIZE], image_interp=C.RESIZE_IMAGE_INTERP, mask_interp=C.RESIZE_MASK_INTERP), binarize_threshold=C.BINARIZE_THRESHOLD[dataset], channels='grayscale (L) -> replicated to 3ch at load time', normalization=dict(mean=list(C.IMAGENET_MEAN), std=list(C.IMAGENET_STD), order='uint8/255 then (x-mean)/std'), crop='none', splits={})
+    manifest = dict(schema_version=SCHEMA_VERSION, dataset=dataset, source=os.path.join(C.RAW_ROOT, C.DATASETS[dataset]['raw_dir']), split_origin=C.DATASETS[dataset]['split_origin'], split_note=C.DATASETS[dataset]['split_note'], built_at=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), resize=dict(size=[C.IMG_SIZE, C.IMG_SIZE], image_interp=C.RESIZE_IMAGE_INTERP, mask_interp=C.RESIZE_MASK_INTERP), binarize_threshold=C.BINARIZE_THRESHOLD[dataset], channels='grayscale (L) -> replicated to 3ch at load time', normalization=dict(kind='per_image_minmax', scale=255.0, order='uint8 -> per-image min-max to [0,255]'), crop='none', splits={})
     for split, names in splits.items():
         out_dir = os.path.join(root, split)
         n_ok, errs, fg = (0, [], [])

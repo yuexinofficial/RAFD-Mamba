@@ -154,17 +154,13 @@ def main():
         tr_loss = tot / max(1, seen)
         has_rafr = hasattr(model, 'rafr_stats') and hasattr(model, 'reset_rafr_stats')
         has_dmsc = hasattr(model, 'dmsc_stats') and hasattr(model, 'reset_dmsc_stats')
-        has_msfr = hasattr(model, 'msfr_stats') and hasattr(model, 'reset_msfr_stats')
         if has_rafr:
             model.reset_rafr_stats()
         if has_dmsc:
             model.reset_dmsc_stats()
-        if has_msfr:
-            model.reset_msfr_stats()
         val, _ = evaluate(model, va_dl, device, max_batches=args.max_val_batches)
         rafr = model.rafr_stats() if has_rafr else {}
         dmsc = model.dmsc_stats() if has_dmsc else {}
-        msfr = model.msfr_stats() if has_msfr else {}
         cur = val[C.BEST_METRIC]
         if step_per == 'plateau':
             scheduler.step(cur)
@@ -172,8 +168,6 @@ def main():
         log(f'ep {epoch:3d}/{epochs} | lr {optimizer.param_groups[0]['lr']:.2e} | loss {tr_loss:.4f} | val_dice {val['dice']:.4f} | iou {val['iou']:.4f} | hd95 {val['hd95']:.3f} | {dt:.0f}s')
         if rafr:
             log('    RAFR ' + '  '.join((f'skip{k}: lam={v['lambda_mean']:.4f} E={v['E']:.2e}' for k, v in sorted(rafr.items()))))
-        if msfr:
-            log('    MSFR ' + '  '.join((f'skip{k}: lam={v['lambda_mean']:.4f} E={v['E']:.2e} rho={v['rho_mean']:.3f}+-{v['rho_std']:.3f} corr={v['corr_rho_lambda']:+.3f}' for k, v in sorted(msfr.items()))))
         if dmsc:
 
             def _dev(v):
@@ -184,7 +178,7 @@ def main():
             save_ckpt('best_model.pth', epoch, best_epoch, best_dice, cur)
         save_ckpt('final_model.pth', epoch, best_epoch, best_dice, cur)
         with open(metrics_path, 'a', encoding='utf-8') as f:
-            f.write(json.dumps(dict(epoch=epoch, lr=optimizer.param_groups[0]['lr'], train_loss=tr_loss, val_dice=val['dice'], val_iou=val['iou'], val_hd95=val['hd95'], val_n=val['n'], val_n_skipped=val['n_skipped'], rafr={k: {kk: vv for kk, vv in v.items()} for k, v in rafr.items()}, dmsc={k: {kk: vv for kk, vv in v.items()} for k, v in dmsc.items()}, msfr={k: {kk: vv for kk, vv in v.items()} for k, v in msfr.items()}, seconds=round(dt, 2)), ensure_ascii=False) + '\n')
+            f.write(json.dumps(dict(epoch=epoch, lr=optimizer.param_groups[0]['lr'], train_loss=tr_loss, val_dice=val['dice'], val_iou=val['iou'], val_hd95=val['hd95'], val_n=val['n'], val_n_skipped=val['n_skipped'], rafr={k: {kk: vv for kk, vv in v.items()} for k, v in rafr.items()}, dmsc={k: {kk: vv for kk, vv in v.items()} for k, v in dmsc.items()}, seconds=round(dt, 2)), ensure_ascii=False) + '\n')
     save_ckpt('last_model.pth', epochs, best_epoch, best_dice, cur)
     log(f'DONE. best val_dice={best_dice:.4f} @ ep{best_epoch}')
     log('ARM_COMPLETE')

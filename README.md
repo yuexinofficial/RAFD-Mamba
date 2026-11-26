@@ -23,8 +23,14 @@ Yongxi Chen, Zequn Li, Min Lin
 ## Repository layout
 
 ```
-code/      Python source (comments and docstrings removed; see below)
-figures/   Final figures, named by their number in the manuscript
+code/                       Python source (comments and docstrings removed; see below)
+  configs.py                protocols, preprocessing and training settings
+  train.py, test.py         training and evaluation entry points
+  models/mybackbone.py      backbone with RAFR and DMSC wired in
+  models/modules/           rafr.py, dmsc.py, wavelet.py
+  models/vmunet/            VM-UNet backbone (third party)
+  probes/                   scripts that regenerate the manuscript figures
+figures/                    Final figures, named by their number in the manuscript
 ```
 
 ## Environment
@@ -75,10 +81,12 @@ validation Dice.
 ## Note on comments
 
 Source files authored by the authors have had all comments and docstrings removed
-(`ast`-based stripping; code semantics unchanged). Files that reproduce third-party
-modules — VM-UNet (`models/vmunet/`), EccoMamba HAE/SCO (`models/modules/hae.py`,
-`sco.py`) and MSACA (`msaca.py`, `msaca_dual.py`) — are kept verbatim with their
-original attribution headers, as required by their licenses.
+(`ast`-based stripping; code semantics unchanged). `models/vmunet/` reproduces the
+VM-UNet backbone (VMamba encoder and VSS decoder) and is kept verbatim with its
+original attribution header, as required by its license. Everything else in
+`code/models/` implements the two modules of this paper: RAFR in
+`models/modules/rafr.py` (+ the Haar transform in `wavelet.py`) and DMSC in
+`models/modules/dmsc.py`, wired into the backbone in `models/mybackbone.py`.
 
 ## Figures
 
