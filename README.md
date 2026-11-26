@@ -4,7 +4,7 @@ Official code and figures for the paper:
 
 > **RAFD-Mamba: A Mamba-Based Network Integrating Reliability-Aware Frequency Residual and Dynamic Multi-Scale Sparse Context for Thyroid Nodule Ultrasound Segmentation**
 
-Yongxi Chen, Zequn Li, Min Lin, Bixiong Liu
+Yongxi Chen, Zequn Li, Min Lin
 
 ## Model overview
 
